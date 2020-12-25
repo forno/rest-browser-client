@@ -1,0 +1,37 @@
+{
+  "name": "@forno/rest-browser-client",
+  "description": "REST API client for browser",
+  "version": "0.0.1",
+  "engines": {
+    "node": "15"
+  },
+  "author": {
+    "name": "FORNO",
+    "email": "forno@xmaho.link",
+    "url": "https://twitter.com/forno_fornya"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "module": "dist/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/forno/rest-browser-client.git"
+  },
+  "keywords": [
+    "rest",
+    "browser"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/forno/rest-browser-client/issues"
+  },
+  "homepage": "https://github.com/forno/rest-browser-client#readme",
+  "devDependencies": {
+    "ts-loader": "^8.0.12",
+    "typescript": "^4.1.3",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
