@@ -18,7 +18,7 @@ module.exports = {
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
-    library: 'RestBrowserClient',
-    libraryTarget: 'commonjs2',
+    library: "RestBrowserClient",
+    libraryTarget: "umd2"
   },
 };
