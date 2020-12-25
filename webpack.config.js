@@ -18,10 +18,13 @@ module.exports = ["inline-source-map"].map((devtool) => ({
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
-    library: "RestBrowserClient",
+    module: true,
   },
   devtool,
   optimization: {
     runtimeChunk: true,
+  },
+  experiments: {
+    outputModule: true,
   },
 }));
