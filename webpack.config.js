@@ -1,7 +1,7 @@
 const path = require("path");
 
-module.exports = ["inline-source-map"].map((devtool) => ({
-  mode: "development",
+module.exports = {
+  mode: "production",
   entry: path.resolve(__dirname, "src/index.ts"),
   module: {
     rules: [
@@ -20,11 +20,7 @@ module.exports = ["inline-source-map"].map((devtool) => ({
     path: path.resolve(__dirname, "dist"),
     module: true,
   },
-  devtool,
-  optimization: {
-    runtimeChunk: true,
-  },
   experiments: {
     outputModule: true,
   },
-}));
+};
