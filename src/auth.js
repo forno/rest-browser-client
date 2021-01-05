@@ -23,12 +23,6 @@ export class AuthService {
   async refresh() {
     throw SyntaxError("FYI: AuthService is a interface class");
   }
-  async signin(credentials) {
-    throw SyntaxError("FYI: AuthService is a interface class");
-  }
-  signout() {
-    throw SyntaxError("FYI: AuthService is a interface class");
-  }
 }
 
 export default AuthService;
