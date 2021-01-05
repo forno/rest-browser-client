@@ -1,4 +1,4 @@
-import { AuthService, UninitalizedRefreshTokenError } from "./auth.js";
+import { UninitalizedRefreshTokenError } from "./auth.js";
 import { communicateRestApi } from "./communicate.js";
 
 export class RestService {
