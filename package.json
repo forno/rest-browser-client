@@ -14,6 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "module": "src/main.js",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/forno/rest-browser-client.git"
