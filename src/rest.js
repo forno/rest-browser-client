@@ -1,27 +1,19 @@
-import { AuthService, UninitalizedRefreshTokenError } from "./auth";
-import { communicateRestApi } from "./communicate";
+import { AuthService, UninitalizedRefreshTokenError } from "./auth.js";
+import { communicateRestApi } from "./communicate.js";
 
 export class RestService {
-  private _baseUrl: string;
-  private _authService: AuthService;
+  #baseUrl;
+  #authService;
 
-  constructor(baseUrl: string, authService: AuthService) {
-    this._baseUrl = baseUrl;
-    this._authService = authService;
+  constructor(baseUrl, authService) {
+    this.#baseUrl = baseUrl;
+    this.#authService = authService;
   }
 
-  async requestRestApi({
-    body,
-    method,
-    restUrl,
-  }: {
-    body?: object;
-    method: string;
-    restUrl: string;
-  }) {
-    const url = `${this._baseUrl}${restUrl}`;
+  async requestRestApi({ body, method, restUrl }) {
+    const url = `${this.#baseUrl}${restUrl}`;
     try {
-      const token = await this._authService.refresh();
+      const token = await this.#authService.refresh();
       return await communicateRestApi(url, { method }, { body, token });
     } catch (e) {
       if (!(e instanceof UninitalizedRefreshTokenError)) {
@@ -36,15 +28,7 @@ export class RestService {
     }
   }
 
-  async requestRestApi2json({
-    body,
-    method,
-    restUrl,
-  }: {
-    body?: object;
-    method: string;
-    restUrl: string;
-  }) {
+  async requestRestApi2json({ body, method, restUrl }) {
     const res = await this.requestRestApi({ restUrl, method, body });
     if (res.ok) {
       return await res.json();
