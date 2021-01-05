@@ -5,7 +5,7 @@ export class UninitalizedRefreshTokenError extends Error {
     Object.defineProperty(this, "name", {
       configurable: true,
       enumerable: false,
-      value: this.constructor.name,
+      value: "UninitalizedRefreshTokenError",
       writable: true,
     });
 
