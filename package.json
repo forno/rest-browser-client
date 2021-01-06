@@ -1,7 +1,7 @@
 {
   "name": "@forno/rest-browser-client",
   "description": "REST API client for browser",
-  "version": "0.0.8",
+  "version": "0.0.7",
   "engines": {
     "node": "15"
   },
@@ -11,9 +11,10 @@
     "url": "https://twitter.com/forno_fornya"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d dist --extensions \".ts\""
   },
-  "module": "src/main.js",
+  "module": "dist/main.js",
   "type": "module",
   "repository": {
     "type": "git",
@@ -27,5 +28,11 @@
   "bugs": {
     "url": "https://github.com/forno/rest-browser-client/issues"
   },
-  "homepage": "https://github.com/forno/rest-browser-client#readme"
+  "homepage": "https://github.com/forno/rest-browser-client#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-syntax-class-properties": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.7"
+  }
 }

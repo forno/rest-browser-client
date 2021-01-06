@@ -1,0 +1,4 @@
+{
+  "presets": [["@babel/preset-typescript", { "allowDeclareFields": true }]],
+  "plugins": [["@babel/plugin-syntax-class-properties"]]
+}
