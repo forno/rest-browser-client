@@ -1,4 +1,7 @@
 {
-  "presets": [["@babel/preset-typescript", { "allowDeclareFields": true }]],
+  "presets": [
+    ["@babel/preset-typescript", { "allowDeclareFields": true }],
+    ["@babel/preset-env", { "targets": { "chrome": "65" } }]
+  ],
   "plugins": [["@babel/plugin-syntax-class-properties"]]
 }
