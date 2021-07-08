@@ -4,10 +4,25 @@ import { communicateRestApi } from "./communicate.js";
 export class RestService {
   #baseUrl: string;
   #authService: AuthService;
+  #token?: string;
 
   constructor(baseUrl: string, authService: AuthService) {
     this.#baseUrl = baseUrl;
     this.#authService = authService;
+    this.#token = undefined;
+  }
+
+  #hasValidToken() {
+    if (this.#token == null) {
+      return false;
+    }
+    const jwtPayload = JSON.parse(globalThis.atob(this.#token.split(".")[1]));
+    const exp = jwtPayload.exp as number;
+    return Date.now() < exp * 1000;
+  }
+
+  async #refreshToken() {
+    this.#token = await this.#authService.refresh();
   }
 
   async requestRestApi({
@@ -20,20 +35,14 @@ export class RestService {
     restUrl: string;
   }) {
     const url = `${this.#baseUrl}${restUrl}`;
-    try {
-      const token = await this.#authService.refresh();
-      return await communicateRestApi(url, { method }, { body, token });
-    } catch (e) {
-      if (!(e instanceof UninitializedRefreshTokenError)) {
-        throw e; // refreshTokenが存在するのにエラーならその例外をthrow
-      }
-      // RefreshTokenが無い場合はtoken無で通信を試みる
-      const res = await communicateRestApi(url, { method }, { body });
-      if (!res.ok) {
-        throw e; // どんな通信エラーだったとしてもrefreshTokenが無かったことを通知
-      }
-      return res;
+    if (!this.#hasValidToken()) {
+      await this.#refreshToken();
     }
+    return await communicateRestApi(
+      url,
+      { method },
+      { body, token: this.#token }
+    );
   }
 
   async requestRestApi2json({
