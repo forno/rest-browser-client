@@ -1,4 +1,4 @@
-import { AuthService, UninitalizedRefreshTokenError } from "./auth.js";
+import { AuthService, UninitializedRefreshTokenError } from "./auth.js";
 import { communicateRestApi } from "./communicate.js";
 
 export class RestService {
@@ -24,7 +24,7 @@ export class RestService {
       const token = await this.#authService.refresh();
       return await communicateRestApi(url, { method }, { body, token });
     } catch (e) {
-      if (!(e instanceof UninitalizedRefreshTokenError)) {
+      if (!(e instanceof UninitializedRefreshTokenError)) {
         throw e; // refreshTokenが存在するのにエラーならその例外をthrow
       }
       // RefreshTokenが無い場合はtoken無で通信を試みる

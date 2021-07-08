@@ -1,4 +1,4 @@
-export class UninitalizedRefreshTokenError extends Error {
+export class UninitializedRefreshTokenError extends Error {
   constructor(...args: any) {
     super(...args);
 
