@@ -1,4 +1,4 @@
-import { AuthService } from "./auth.js";
+import { AuthService, UninitializedRefreshTokenError } from "./auth.js";
 import { communicateRestApi } from "./communicate.js";
 // @ts-ignore
 import { decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.6.1/base64.mjs';
@@ -23,10 +23,6 @@ export class RestService {
     return Date.now() < exp * 1000;
   }
 
-  async #refreshToken() {
-    this.#token = await this.#authService.refresh();
-  }
-
   async requestRestApi({
     body,
     method,
@@ -37,14 +33,29 @@ export class RestService {
     restUrl: string;
   }) {
     const url = `${this.#baseUrl}${restUrl}`;
+    let err: UninitializedRefreshTokenError | null = null;
     if (!this.#hasValidToken()) {
-      await this.#refreshToken();
+      try {
+        this.#token = await this.#authService.refresh();
+      } catch (e) {
+        if (!(e instanceof UninitializedRefreshTokenError)) {
+          throw e;
+        }
+        err = e;
+      }
     }
-    return await communicateRestApi(
-      url,
-      { method },
-      { body, token: this.#token }
-    );
+    try {
+      return await communicateRestApi(
+        url,
+        { method },
+        { body, token: this.#token }
+      );
+    } catch (e) {
+      if (err != null) {
+        throw err;
+      }
+      throw e;
+    }
   }
 
   async requestRestApi2json({
