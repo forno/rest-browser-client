@@ -1,5 +1,7 @@
-import { AuthService, UninitializedRefreshTokenError } from "./auth.js";
+import { AuthService } from "./auth.js";
 import { communicateRestApi } from "./communicate.js";
+// @ts-ignore
+import { decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.6.1/base64.mjs';
 
 export class RestService {
   #baseUrl: string;
@@ -16,7 +18,7 @@ export class RestService {
     if (this.#token == null) {
       return false;
     }
-    const jwtPayload = JSON.parse(globalThis.atob(this.#token.split(".")[1]));
+    const jwtPayload = JSON.parse(decode(this.#token.split(".")[1]));
     const exp = jwtPayload.exp as number;
     return Date.now() < exp * 1000;
   }
