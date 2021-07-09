@@ -57,23 +57,6 @@ export class RestService {
       throw e;
     }
   }
-
-  async requestRestApi2json({
-    body,
-    method,
-    restUrl,
-  }: {
-    body?: object;
-    method: string;
-    restUrl: string;
-  }) {
-    const res = await this.requestRestApi({ restUrl, method, body });
-    if (res.ok) {
-      return await res.json();
-    } else {
-      throw Error(res.statusText);
-    }
-  }
 }
 
 export default RestService;
