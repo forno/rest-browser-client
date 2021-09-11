@@ -1,7 +1,7 @@
 import { AuthService, UninitializedRefreshTokenError } from "./auth.js";
 import { communicateRestApi } from "./communicate.js";
 // @ts-ignore
-import { decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.6.1/base64.mjs';
+import { decode } from 'js-base64';
 
 export class RestService {
   #baseUrl: string;
