@@ -1,12 +1,9 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "noImplicitAny": true,
-    "outDir": "./dist/",
-    "sourceMap": true,
-    "strict": true,
     "target": "ESNext",
+    "outDir": "./dist/",
+    "declaration": true,
+    "strict": true
   }
 }
