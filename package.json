@@ -1,7 +1,7 @@
 {
   "name": "@forno/rest-browser-client",
   "description": "REST API client for browser",
-  "version": "1.0.1-2",
+  "version": "1.0.1",
   "engines": {
     "node": ">= 16"
   },
