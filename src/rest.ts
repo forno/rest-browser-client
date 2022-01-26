@@ -24,6 +24,26 @@ export class RestService {
     return Date.now() < jwtPayload.exp * 1000;
   }
 
+  async #refresh() {
+    this.#token = await this.#authService.refresh();
+  }
+
+  async #communicate({
+    body,
+    method,
+    url,
+  }: {
+    body?: object;
+    method: string;
+    url: string;
+  }) {
+    return await communicateRestApi(
+      url,
+      { method },
+      { body, token: this.#token }
+    );
+  }
+
   async requestRestApi({
     body,
     method,
@@ -35,39 +55,33 @@ export class RestService {
   }) {
     const url = `${this.#baseUrl}${restUrl}`;
     let err: UninitializedRefreshTokenError | null = null;
-    const refresh = async () => {
+
+    if (!this.#hasValidToken()) {
       try {
-        this.#token = await this.#authService.refresh();
+        await this.#refresh();
       } catch (e) {
         if (!(e instanceof UninitializedRefreshTokenError)) {
           throw e;
         }
         err = e;
       }
-    };
-
-    if (!this.#hasValidToken()) {
-      await refresh();
     }
-    const communicate = () => {
-      return communicateRestApi(url, { method }, { body, token: this.#token });
-    };
 
     try {
-      return await communicate();
+      return await this.#communicate({ body, method, url });
     } catch (e) {
-      if (!this.#hasValidToken()) {
-        await refresh();
-        try {
-          return await communicate();
-        } catch (e2) {
-          if (err != null) {
-            throw err;
-          }
-          throw e2;
-        }
+      if (this.#hasValidToken()) {
+        throw e;
       }
-      throw e;
+      try {
+        await this.#refresh();
+        return await this.#communicate({ body, method, url });
+      } catch (e2) {
+        if (err != null) {
+          throw err;
+        }
+        throw e2;
+      }
     }
   }
 }
