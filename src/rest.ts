@@ -13,11 +13,11 @@ export class RestService {
     this.#token = undefined;
   }
 
-  async #hasValidToken() {
+  #hasValidToken() {
     if (this.#token == null) {
       return false;
     }
-    const jwtPayload = JSON.parse(await decode(this.#token.split(".")[1])) as {
+    const jwtPayload = JSON.parse(decode(this.#token.split(".")[1])) as {
       exp: number;
     };
     return Date.now() < jwtPayload.exp * 1000;
@@ -55,7 +55,7 @@ export class RestService {
     const url = `${this.#baseUrl}${restUrl}`;
     let err: UninitializedRefreshTokenError | null = null;
 
-    if (!await this.#hasValidToken()) {
+    if (!this.#hasValidToken()) {
       try {
         await this.#refresh();
       } catch (e) {
@@ -69,7 +69,7 @@ export class RestService {
     try {
       return await this.#communicate({ body, method, url });
     } catch (e) {
-      if (await this.#hasValidToken()) {
+      if (this.#hasValidToken()) {
         throw e;
       }
       try {
