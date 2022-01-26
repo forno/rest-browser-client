@@ -1,7 +1,7 @@
 import { AuthService, UninitializedRefreshTokenError } from "./auth.js";
 import { communicateRestApi } from "./communicate.js";
-
-const decode = globalThis.atob;
+// @ts-ignore
+import { decode } from 'js-base64';
 
 export class RestService {
   #baseUrl: string;
@@ -18,9 +18,30 @@ export class RestService {
     if (this.#token == null) {
       return false;
     }
-    const jwtPayload = JSON.parse(decode(this.#token.split(".")[1]));
-    const exp = jwtPayload.exp as number;
-    return Date.now() < exp * 1000;
+    const jwtPayload = JSON.parse(decode(this.#token.split(".")[1])) as {
+      exp: number;
+    };
+    return Date.now() < jwtPayload.exp * 1000;
+  }
+
+  async #refresh() {
+    this.#token = await this.#authService.refresh();
+  }
+
+  async #communicate({
+    body,
+    method,
+    url,
+  }: {
+    body?: object;
+    method: string;
+    url: string;
+  }) {
+    return await communicateRestApi(
+      url,
+      { method },
+      { body, token: this.#token }
+    );
   }
 
   async requestRestApi({
@@ -34,9 +55,10 @@ export class RestService {
   }) {
     const url = `${this.#baseUrl}${restUrl}`;
     let err: UninitializedRefreshTokenError | null = null;
+
     if (!this.#hasValidToken()) {
       try {
-        this.#token = await this.#authService.refresh();
+        await this.#refresh();
       } catch (e) {
         if (!(e instanceof UninitializedRefreshTokenError)) {
           throw e;
@@ -44,17 +66,22 @@ export class RestService {
         err = e;
       }
     }
+
     try {
-      return await communicateRestApi(
-        url,
-        { method },
-        { body, token: this.#token }
-      );
+      return await this.#communicate({ body, method, url });
     } catch (e) {
-      if (err != null) {
-        throw err;
+      if (this.#hasValidToken()) {
+        throw e;
       }
-      throw e;
+      try {
+        await this.#refresh();
+        return await this.#communicate({ body, method, url });
+      } catch (e2) {
+        if (err != null) {
+          throw err;
+        }
+        throw e2;
+      }
     }
   }
 }
