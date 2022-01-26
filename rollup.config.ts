@@ -22,6 +22,7 @@ export default [
     plugins: [pluginTypescript({
       tsconfig: "./tsconfig.json",
     })],
+    external: ['js-base64'],
   },
   {
     input: "src/index.ts",
