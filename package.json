@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/forno/rest-browser-client#readme",
   "devDependencies": {
+    "rollup": "^2.66.1",
     "typescript": "latest"
   },
   "dependencies": {
