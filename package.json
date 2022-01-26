@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "rollup -c",
     "prepare": "npm run build"
   },
   "types": "dist/index.d.ts",
@@ -40,6 +40,8 @@
   },
   "homepage": "https://github.com/forno/rest-browser-client#readme",
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@rollup/plugin-typescript": "^8.3.0",
     "rollup": "^2.66.1",
     "typescript": "latest"
   },

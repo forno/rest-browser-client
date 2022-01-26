@@ -1,9 +1,18 @@
 {
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "dist"
+  ],
   "compilerOptions": {
     "module": "ESNext",
     "target": "ES2021",
-    "outDir": "./dist/",
+    "rootDir": "./src",
+    "outDir": "./dist",
     "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": ".",
     "strict": true
   }
 }
