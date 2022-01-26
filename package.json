@@ -33,8 +33,5 @@
   "homepage": "https://github.com/forno/rest-browser-client#readme",
   "devDependencies": {
     "typescript": "latest"
-  },
-  "dependencies": {
-    "js-base64": "^3.7.0"
   }
 }
