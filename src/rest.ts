@@ -34,7 +34,7 @@ export class RestService {
   }) {
     const url = `${this.#baseUrl}${restUrl}`;
     let err: UninitializedRefreshTokenError | null = null;
-    if (!this.#hasValidToken()) {
+    const refresh = async () => {
       try {
         this.#token = await this.#authService.refresh();
       } catch (e) {
@@ -43,16 +43,25 @@ export class RestService {
         }
         err = e;
       }
-    }
+    };
+
+    const communicate = () => {
+      return communicateRestApi(url, { method }, { body, token: this.#token });
+    };
+
     try {
-      return await communicateRestApi(
-        url,
-        { method },
-        { body, token: this.#token }
-      );
+      return await communicate();
     } catch (e) {
-      if (err != null) {
-        throw err;
+      if (!this.#hasValidToken()) {
+        await refresh();
+        try {
+          return await communicate();
+        } catch (e2) {
+          if (err != null) {
+            throw err;
+          }
+          throw e2;
+        }
       }
       throw e;
     }
