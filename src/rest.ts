@@ -18,9 +18,10 @@ export class RestService {
     if (this.#token == null) {
       return false;
     }
-    const jwtPayload = JSON.parse(decode(this.#token.split(".")[1]));
-    const exp = jwtPayload.exp as number;
-    return Date.now() < exp * 1000;
+    const jwtPayload = JSON.parse(decode(this.#token.split(".")[1])) as {
+      exp: number;
+    };
+    return Date.now() < jwtPayload.exp * 1000;
   }
 
   async requestRestApi({
@@ -45,6 +46,9 @@ export class RestService {
       }
     };
 
+    if (!this.#hasValidToken()) {
+      await refresh();
+    }
     const communicate = () => {
       return communicateRestApi(url, { method }, { body, token: this.#token });
     };
