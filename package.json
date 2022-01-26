@@ -15,7 +15,9 @@
     "build": "tsc",
     "prepare": "npm run build"
   },
+  "types": "dist/index.d.ts",
   "module": "dist/index.js",
+  "browser": "dist/rest-browser-client.js",
   "type": "module",
   "repository": {
     "type": "git",
@@ -24,9 +26,15 @@
   "keywords": [
     "rest",
     "browser",
-    "jwt"
+    "jwt",
+    "typescript"
   ],
   "license": "ISC",
+  "include": [
+    "package.json",
+    "dist",
+    "LICENSE"
+  ],
   "bugs": {
     "url": "https://github.com/forno/rest-browser-client/issues"
   },
