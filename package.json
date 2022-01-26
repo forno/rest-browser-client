@@ -44,8 +44,5 @@
     "@rollup/plugin-typescript": "^8.3.0",
     "rollup": "^2.66.1",
     "typescript": "latest"
-  },
-  "dependencies": {
-    "js-base64": "^3.7.0"
   }
 }
