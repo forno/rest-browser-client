@@ -1,7 +1,3 @@
-declare type RequestInfo = any;
-declare type RequestInit = any;
-declare function fetch(url: RequestInfo, init: RequestInit): Promise<any>;
-
 export const communicateRestApi = async (
   url: RequestInfo,
   init: Omit<RequestInit, "body" | "headers">,
