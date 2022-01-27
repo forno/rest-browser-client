@@ -1,6 +1,6 @@
 import { AuthService, UninitializedRefreshTokenError } from "./auth.js";
 import { communicateRestApi } from "./communicate.js";
-import { decode } from './libs/base64.js'
+import { decode } from "./libs/base64.js";
 
 export class RestService {
   #baseUrl: string;
@@ -53,34 +53,10 @@ export class RestService {
     restUrl: string;
   }) {
     const url = `${this.#baseUrl}${restUrl}`;
-    let err: UninitializedRefreshTokenError | null = null;
-
-    if (!this.#hasValidToken()) {
-      try {
-        await this.#refresh();
-      } catch (e) {
-        if (!(e instanceof UninitializedRefreshTokenError)) {
-          throw e;
-        }
-        err = e;
-      }
-    }
-
-    try {
+    const res = await this.#communicate({ body, method, url });
+    if (res.status === 401 && !this.#hasValidToken()) {
+      await this.#refresh();
       return await this.#communicate({ body, method, url });
-    } catch (e) {
-      if (this.#hasValidToken()) {
-        throw e;
-      }
-      try {
-        await this.#refresh();
-        return await this.#communicate({ body, method, url });
-      } catch (e2) {
-        if (err != null) {
-          throw err;
-        }
-        throw e2;
-      }
     }
   }
 }
