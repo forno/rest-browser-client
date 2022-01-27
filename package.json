@@ -30,7 +30,7 @@
     "typescript"
   ],
   "license": "ISC",
-  "include": [
+  "files": [
     "package.json",
     "dist",
     "LICENSE"
