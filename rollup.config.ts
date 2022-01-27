@@ -18,10 +18,11 @@ export default [
       sourcemap: "inline",
       banner,
     },
-    plugins: [pluginTypescript({
-      tsconfig: "./tsconfig.json",
-    })],
-    external: ['js-base64'],
+    plugins: [
+      pluginTypescript({
+        tsconfig: "./tsconfig.json",
+      }),
+    ],
   },
   {
     input: "src/index.ts",
@@ -32,8 +33,6 @@ export default [
       sourcemap: "inline",
       banner,
     },
-    plugins: [
-      pluginTypescript(),
-    ],
+    plugins: [pluginTypescript()],
   },
 ];
