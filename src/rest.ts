@@ -1,4 +1,4 @@
-import { AuthService, UninitializedRefreshTokenError } from "./auth.js";
+import { AuthService } from "./auth.js";
 import { communicateRestApi } from "./communicate.js";
 import { decode } from "./libs/base64.js";
 
