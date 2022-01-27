@@ -54,10 +54,11 @@ export class RestService {
   }) {
     const url = `${this.#baseUrl}${restUrl}`;
     const res = await this.#communicate({ body, method, url });
-    if (res.status === 401 && !this.#hasValidToken()) {
-      await this.#refresh();
-      return await this.#communicate({ body, method, url });
+    if (res.status !== 401 || this.#hasValidToken()) {
+      return res;
     }
+    await this.#refresh();
+    return await this.#communicate({ body, method, url });
   }
 }
 
