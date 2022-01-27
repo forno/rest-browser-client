@@ -11,22 +11,13 @@ const banner = `/*!
 export default [
   {
     input: "src/index.ts",
-    output: [
-      {
-        name: "index.js",
-        file: pkg.module,
-        format: "es",
-        sourcemap: "inline",
-        banner,
-      },
-      {
-        name: "rest-browser-client",
-        file: pkg.browser,
-        format: "es",
-        sourcemap: "inline",
-        banner,
-      },
-    ],
+    output: {
+      name: "index.js",
+      file: pkg.module,
+      format: "es",
+      sourcemap: "inline",
+      banner,
+    },
     plugins: [
       pluginTypescript({
         tsconfig: "./tsconfig.json",

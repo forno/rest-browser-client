@@ -17,7 +17,7 @@
   },
   "types": "dist/index.d.ts",
   "module": "dist/index.js",
-  "browser": "dist/rest-browser-client.js",
+  "browser": "dist/index.js",
   "type": "module",
   "repository": {
     "type": "git",
