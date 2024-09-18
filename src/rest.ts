@@ -23,10 +23,6 @@ export class RestService {
     return Date.now() < jwtPayload.exp * 1000;
   }
 
-  async #refresh() {
-    this.#token = await this.#authService.refresh();
-  }
-
   async #communicate({
     body,
     method,
@@ -43,6 +39,10 @@ export class RestService {
     );
   }
 
+  async refresh() {
+    this.#token = await this.#authService.refresh();
+  }
+
   async requestRestApi({
     body,
     method,
@@ -57,7 +57,7 @@ export class RestService {
     if (res.status !== 401 || this.#hasValidToken()) {
       return res;
     }
-    await this.#refresh();
+    await this.refresh();
     return await this.#communicate({ body, method, url });
   }
 }
